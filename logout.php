@@ -1,30 +1,18 @@
 <?php
 session_start();
-
-if (isset($_SESSION["NAME"])) {
-  $errorMessage = "ログアウトしました。";
-} else {
-  $errorMessage = "セッションがタイムアウトしました。";
+header("Content-type: text/html; charset=utf-8");
+// ログイン状態のチェック
+if (!isset($_SESSION["account"])) {
+  header("Location: login_form.php");
+  exit();
 }
-
-// セッションの変数のクリア
+//セッション変数を全て解除
 $_SESSION = array();
-
-// セッションクリア
-@session_destroy();
-?>
-
-<!doctype html>
-  <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>ログアウト</title>
-  </head>
-  <body>
-    <h1>ログアウト画面</h1>
-    <div><?php echo htmlspecialchars($errorMessage, ENT_QUOTES); ?></div>
-    <ul>
-      <li><a href="Login.php">ログイン画面に戻る</a></li>
-    </ul>
-  </body>
-</html>
+//セッションクッキーの削除
+if (isset($_COOKIE["PHPSESSID"])) {
+  setcookie("PHPSESSID", '', time() - 1800, '/');
+}
+//セッションを破棄する
+session_destroy();
+echo "<p>ログアウトしました。</p>";
+echo "<a href='login_form.php'>ログイン画面へ</a>";
