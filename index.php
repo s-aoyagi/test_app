@@ -42,5 +42,8 @@
     </table>
     </table>
   </div>
+  <ul>
+    <li><a href="Logout.php">ログアウト</a></li>
+  </ul>
 </body>
 </html>
