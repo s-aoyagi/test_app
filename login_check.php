@@ -1,19 +1,21 @@
 <?php
 session_start();
 header("Content-type: text/html; charset=utf-8");
+//csrf対策
 if ($_POST['token'] != $_SESSION['token']){
   echo "不正アクセスの可能性あり";
   exit();
 }
-header('X-FRAME-OPTIONS: SAMEORIGIN');
+
 //データベース接続
 require_once("functions.php");
 $dbh = db_connect();
+// 前後のスペース削除
 function spaceTrim ($str) {
   $str = preg_replace('/^[ 　]+/u', '', $str);
-  // 末尾
   $str = preg_replace('/[ 　]+$/u', '', $str);
 }
+// エラーメッセージ初期化
 $errors = array();
 
 if(empty($_POST)) {
