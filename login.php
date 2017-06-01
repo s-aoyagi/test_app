@@ -1,10 +1,6 @@
 <?php
 require 'password.php';
 
-$db['host'] = "localhost";
-$db['user'] = "root";
-$db['pass'] = "password";
-$db['dbname'] = "loginManagement";
 $errorMessage = "";
 
 if (isset($_POST["login"])) {
