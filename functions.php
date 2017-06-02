@@ -63,14 +63,16 @@ function transition($path) {
     createUser($data);
     return 'create';
   }else{
-    if(isset($data['todo'])) $res = validateTodo($data['todo']);
-    if(!$res || !empty($_SESSION['err'])){
-      return 'back';
-    }else{
-      if($path === '/new.php'){
-        create($data);
-      }elseif($path === '/edit.php'){
-        update($data);
+    if(isset($data['todo'])) {
+      $res = validateTodo($data['todo']);
+      if(!$res || !empty($_SESSION['err'])){
+        return 'back';
+      }else{
+        if($path === '/new.php'){
+          create($data);
+        }elseif($path === '/edit.php'){
+          update($data);
+        }
       }
     }
   }
@@ -81,9 +83,11 @@ function deleteData($id) {
 }
 
 function createUser($data){
-  $res = validateCreateUser($data);
-  if($res){
-    register($data);
+  $res = validateCreateUser($data['username'],$data['password'],$data['password_confirm']);
+  if(!$res || !empty($_SESSION['err'])){
+      return 'back';
+  } else {
+    register($data['username'], $data['password']);
   }
 }
 
@@ -91,16 +95,15 @@ function validateTodo($data) {
   return $res = $data != "" ? true : $_SESSION['err'] = '入力がありません'; 
 }
 
-function validateCreateUser($data){
-  if (empty($data["username"])) {  // 値が空のとき
-    $errorMessage = 'ユーザーIDが未入力です。';
-    return 'err';
-  } else if (empty($data["password"])) {
-    $errorMessage = 'パスワードが未入力です。';
-    return 'err';
-  } else if (empty($data["password_confirm"])) {
-    $errorMessage = '確認用パスワードが未入力です。';
-    return 'err';
+function validateCreateUser($username, $password, $password_confirm){
+  if (empty($username)) {  // 値が空のとき
+    return $_SESSION['err'] = 'ユーザーIDが未入力です。';
+  } else if (empty($password)) {
+    return $_SESSION['err'] = 'パスワードが未入力です。';
+  } else if (empty($password_confirm)) {
+    return $_SESSION['err'] = '確認用パスワードが未入力です。';
+  } else if($_POST["password"] != $_POST["password_confirm"]) {
+    return $_SESSION['err'] = '確認用パスワードに誤りがあります。';
   }
   return true;
 }

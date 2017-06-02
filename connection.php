@@ -57,20 +57,13 @@ function deleteDb($id) {
   $stmt->execute();
 }
 
-function register() {
+function register($username, $password) {
   $dbh = connectPdo();
   $sql = 'INSERT INTO users(username, password) VALUES (:username, :password)';
   $stmt = $dbh->prepare($sql);
-  // -- $stmt = $dbh->prepare("INSERT INTO users(username, password) VALUES (?, ?)");
-  // $stmt->execute(array($username, password_hash($password, PASSWORD_DEFAULT))); // パスワードのハッシュ化
   $stmt->bindParam(':username', $username);
-  $stmt->bindParam(':password', $password);
-  password_hash($password, PASSWORD_DEFAULT);
-  // return $stmt->excute();
+  $stmt->bindParam(':password', password_hash($password, PASSWORD_DEFAULT));
   $stmt->execute();
-
-  // $userid = $pdo->lastinsertid();
-  // $signUpMessage = '登録が完了しました。';
 }
 
 function login() {
