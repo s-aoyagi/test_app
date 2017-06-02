@@ -82,11 +82,13 @@ function deleteData($id) {
   deleteDb($id);
 }
 
+function userCheck() {
+  login();
+}
+
 function createUser($data){
   $res = validateCreateUser($data['username'],$data['password'],$data['password_confirm']);
-  if(!$res || !empty($_SESSION['err'])){
-      return 'back';
-  } else {
+  if($res && empty($_SESSION['err'])){
     register($data['username'], $data['password']);
   }
 }
@@ -94,6 +96,7 @@ function createUser($data){
 function validateTodo($data) {
   return $res = $data != "" ? true : $_SESSION['err'] = '入力がありません'; 
 }
+
 
 function validateCreateUser($username, $password, $password_confirm){
   if (empty($username)) {  // 値が空のとき

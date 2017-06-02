@@ -60,7 +60,9 @@ $signUpMessage = "";
     <form id="loginForm" name="loginForm" action="store.php" method="POST">
       <fieldset>
         <legend>新規登録フォーム</legend>
-        <div><font color="#ff0000"><?php echo htmlspecialchars($errorMessage, ENT_QUOTES); ?></font></div>
+        <?php if(isset($_SESSION['err'])): ?>
+          <p><?php echo $_SESSION['err'] ?></p>
+        <?php endif; ?>
         <div><font color="#0000ff"><?php echo htmlspecialchars($signUpMessage, ENT_QUOTES); ?></font></div>
         <label for="username">ユーザー名</label><input type="text" name="username" placeholder="ユーザー名入力" value="<?php if (!empty($_POST["username"])) {echo htmlspecialchars($_POST["username"], ENT_QUOTES);} ?>">
         <br>
@@ -68,7 +70,6 @@ $signUpMessage = "";
         <br>
         <label for="password_confirm">パスワード(確認用)</label><input type="password" name="password_confirm" value="" placeholder="確認用パスワード入力">
         <br>
-        <!-- <input type="submit"  name="signUp" value=" 新規登録"> -->
         <button type="submit" name="type" value="signUp">新規登録</button>
       </fieldset>
     </form>

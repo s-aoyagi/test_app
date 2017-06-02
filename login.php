@@ -1,7 +1,5 @@
 <?php
-require_once('config.php');
-// セッション開始
-session_start();
+require_once('functions.php');
 
 $db['host'] = "localhost";  // DBサーバのURL
 $db['user'] = "root";  // ユーザー名
