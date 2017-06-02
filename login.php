@@ -1,12 +1,6 @@
 <?php
 require_once('functions.php');
-
-$db['host'] = "localhost";  // DBサーバのURL
-$db['user'] = "root";  // ユーザー名
-$db['pass'] = "root";  // ユーザー名のパスワード
-$db['dbname'] = "php_lesson";  // データベース名
-
-// エラーメッセージの初期化
+/*// エラーメッセージの初期化
 $errorMessage = "";
 
 // ログインボタンが押された場合
@@ -31,12 +25,8 @@ if (isset($_POST["login"])) {
       if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         if (password_verify($password, $row['password'])) {
           session_regenerate_id(true);
-          // 入力したIDのユーザー名を取得
-          $id = $row['id'];
-          $sql = "SELECT * FROM users WHERE username = $id"; //入力からユーザー名を取得
-          $stmt = $pdo->query($sql);
           foreach ($stmt as $row) {
-              $row['name'];  // ユーザー名
+            $row['name'];  // ユーザー名
           }
           $_SESSION["NAME"] = $row['name']; //セッションにユーザー名を格納
           header("Location: index.php"); // メイン画面へ遷移
@@ -45,13 +35,13 @@ if (isset($_POST["login"])) {
           $errorMessage = 'ユーザー名あるいはパスワードに誤りがあります。';
         }
       } else {
-          $errorMessage = 'ユーザー名あるいはパスワードに誤りがあります。';
+        $errorMessage = 'ユーザー名あるいはパスワードに誤りがあります。';
       }
     } catch (PDOException $e) {
       $errorMessage = 'データ処理でエラーが発生しました';
     }
   }
-}
+}*/
 ?>
 
 <!doctype html>
@@ -65,12 +55,11 @@ if (isset($_POST["login"])) {
     <form id="loginForm" name="loginForm" action="store.php" method="POST">
       <fieldset>
         <legend>ログインフォーム</legend>
-        <div><font color="#ff0000"><?php echo htmlspecialchars($errorMessage, ENT_QUOTES); ?></font></div>
-        <label for="userid">ユーザー名</label><input type="text" id="userid" name="userid" placeholder="ユーザー名を入力" value="<?php if (!empty($_POST["userid"])) {echo htmlspecialchars($_POST["userid"], ENT_QUOTES);} ?>">
+        <label for="username">ユーザー名</label><input type="text" name="username" placeholder="ユーザー名を入力" value="<?php if (!empty($_POST["username"])) {echo htmlspecialchars($_POST["username"], ENT_QUOTES);} ?>">
         <br>
-        <label for="password">パスワード</label><input type="password" id="password" name="password" value="" placeholder="パスワードを入力">
+        <label for="password">パスワード</label><input type="password" name="password" value="" placeholder="パスワードを入力">
         <br>
-        <input type="submit" id="login" name="login" value="ログイン">
+        <button type="submit" name="type" value="login">ログイン</button>
       </fieldset>
     </form>
     <br>

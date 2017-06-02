@@ -62,6 +62,13 @@ function transition($path) {
   }elseif($path === '/register.php'){
     createUser($data);
     return 'create';
+  }elseif($path === '/login.php'){
+    userCheck($data);
+    if(!empty($_SESSION['NAME'])){
+      return 'index';
+    } else {
+      'check';
+    }
   }else{
     if(isset($data['todo'])) {
       $res = validateTodo($data['todo']);
@@ -82,8 +89,24 @@ function deleteData($id) {
   deleteDb($id);
 }
 
-function userCheck() {
-  login();
+function userCheck($data) {
+  $res = validateUserCheck($data['username'],$data['password']);
+  if($res && empty($_SESSION['checkerr'])){
+    $userName = login($data['username'], $data['password']);
+    if(!empty($sessionName)){
+      $_SESSION['NAME'] = $userName;
+    } else {
+      $_SESSION['NAME'] = "";
+    }
+  }
+}
+function validateUserCheck($username, $password) {
+  if (empty($username)) {
+    return $_SESSION['checkerr'] = 'ユーザー名が未入力です。';
+  } else if (empty($password)) {
+    return $_SESSION['checkerr'] = 'パスワードが未入力です。';
+  }
+  return true;
 }
 
 function createUser($data){
@@ -97,7 +120,6 @@ function createUser($data){
 function validateTodo($data) {
   return $res = $data != "" ? true : $_SESSION['err'] = '入力がありません'; 
 }
-
 
 function validateCreateUser($username, $password, $password_confirm){
   if (empty($username)) {  // 値が空のとき
