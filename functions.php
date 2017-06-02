@@ -90,6 +90,7 @@ function createUser($data){
   $res = validateCreateUser($data['username'],$data['password'],$data['password_confirm']);
   if($res && empty($_SESSION['err'])){
     register($data['username'], $data['password']);
+    $_SESSION['msg'] = '登録しました。';
   }
 }
 
