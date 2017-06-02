@@ -1,6 +1,5 @@
 <?php
 require('connection.php');
-session_start();
 
 // エスケープ処理
 function h($s) {

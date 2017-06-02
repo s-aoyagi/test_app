@@ -56,9 +56,3 @@ function deleteDb($id) {
   $stmt->bindValue(':id', $id, PDO::PARAM_INT);
   $stmt->execute();
 }
-
-function register() {
-}
-
-function login() {
-}

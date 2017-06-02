@@ -1,4 +1,5 @@
 <?php
+require_once('config.php');
 // セッション開始
 session_start();
 
@@ -23,18 +24,19 @@ if (isset($_POST["signUp"])) {
   }
 
   if (!empty($_POST["username"]) && !empty($_POST["password"]) && !empty($_POST["password2"]) && $_POST["password"] === $_POST["password2"]) {
-    // 入力したユーザIDとパスワードを格納
+    // 入力したユーザ名とパスワードを格納
     $username = $_POST["username"];
     $password = $_POST["password"];
-    // 2. ユーザIDとパスワードが入力されていたら認証する
-    $dsn = sprintf('mysql: host=%s; dbname=%s; charset=utf8', $db['host'], $db['dbname']);
-    // 3. エラー処理
-    try {
-      $pdo = new PDO($dsn, $db['user'], $db['pass'], array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION));
-      $stmt = $pdo->prepare("INSERT INTO users(username, password) VALUES (?, ?)");
-      $stmt->execute(array($username, password_hash($password, PASSWORD_DEFAULT)));  // パスワードのハッシュ化を行う（今回は文字列のみなのでbindValue(変数の内容が変わらない)を使用せず、直接excuteに渡しても問題ない）
-      $userid = $pdo->lastinsertid();  // 登録した(DB側でauto_incrementした)IDを$useridに入れる
 
+    // ユーザ名とパスワードが入力されていたら認証する
+    $dsn = sprintf('mysql: host=%s; dbname=%s; charset=utf8', $db['host'], $db['dbname']);
+
+    // エラー処理
+    try {
+      $pdo = new PDO(DSN, DB_USER, DB_PASSWORD, array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION));
+      $stmt = $pdo->prepare("INSERT INTO users(username, password) VALUES (?, ?)");
+      $stmt->execute(array($username, password_hash($password, PASSWORD_DEFAULT))); // パスワードのハッシュ化
+      $userid = $pdo->lastinsertid();
       $signUpMessage = '登録が完了しました。';
     } catch (PDOException $e) {
       $errorMessage = 'データベースエラー';
@@ -49,8 +51,8 @@ if (isset($_POST["signUp"])) {
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>新規登録</title>
-  </head>
+      <title>新規登録</title>
+    </head>
   <body>
     <h1>新規登録画面</h1>
     <form id="loginForm" name="loginForm" action="" method="POST">
