@@ -1,5 +1,6 @@
 <?php
 require('connection.php');
+session_start();
 
 // エスケープ処理
 function h($s) {
@@ -54,16 +55,24 @@ function checkReferer() {
 function transition($path) {
   unsetSession();
   $data = $_POST;
-  if(isset($data['todo'])) $res = validate($data['todo']);
+  // if(isset($data['todo'])) $res = validate($data['todo']);
   if($path === '/index.php' && $data['type'] === 'delete'){
     deleteData($data['id']);
     return 'index';
-  }elseif(!$res || !empty($_SESSION['err'])){
-    return 'back';
-  }elseif($path === '/new.php'){
-    create($data);
-  }elseif($path === '/edit.php'){
-    update($data);
+  }elseif($path === '/register.php'){
+    createUser($data);
+    return 'create';
+  }else{
+    if(isset($data['todo'])) $res = validateTodo($data['todo']);
+    if(!$res || !empty($_SESSION['err'])){
+      return 'back';
+    }else{
+      if($path === '/new.php'){
+        create($data);
+      }elseif($path === '/edit.php'){
+        update($data);
+      }
+    }
   }
 }
 
@@ -71,6 +80,27 @@ function deleteData($id) {
   deleteDb($id);
 }
 
-function validate($data) {
+function createUser($data){
+  $res = validateCreateUser($data);
+  if($res){
+    register($data);
+  }
+}
+
+function validateTodo($data) {
   return $res = $data != "" ? true : $_SESSION['err'] = '入力がありません'; 
+}
+
+function validateCreateUser($data){
+  if (empty($data["username"])) {  // 値が空のとき
+    $errorMessage = 'ユーザーIDが未入力です。';
+    return 'err';
+  } else if (empty($data["password"])) {
+    $errorMessage = 'パスワードが未入力です。';
+    return 'err';
+  } else if (empty($data["password_confirm"])) {
+    $errorMessage = '確認用パスワードが未入力です。';
+    return 'err';
+  }
+  return true;
 }

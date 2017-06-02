@@ -1,6 +1,6 @@
 <?php 
   require('functions.php');
-  session_start();
+  unsetSession();
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -9,7 +9,7 @@
   <title>Home</title>
 </head>
 <body>
-  <p>ようこそ<u><?php echo htmlspecialchars($_SESSION["NAME"], ENT_QUOTES); ?></u>さん</p>
+  <p>ようこそ</p>
   <div>
     <a href="new.php">
       <p>新規作成</p>
