@@ -1,6 +1,10 @@
 <?php 
   require('functions.php');
-  unsetSession();
+  // ログイン状態チェック
+  if (!isset($_SESSION["NAME"])) {
+    header("Location: login.php");
+    exit;
+  }
 ?>
 <!DOCTYPE html>
 <html lang="ja">
