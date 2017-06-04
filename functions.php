@@ -64,10 +64,10 @@ function transition($path) {
     return 'create';
   }elseif($path === '/login.php'){
     userCheck($data);
-    if(!empty($_SESSION['NAME'])){
+    if(!empty($_SESSION['NAME'])) {
       return 'index';
     } else {
-      'check';
+      return 'check';
     }
   }else{
     if(isset($data['todo'])) {
@@ -92,20 +92,25 @@ function deleteData($id) {
 function userCheck($data) {
   $res = validateUserCheck($data['username'],$data['password']);
   if($res && empty($_SESSION['checkerr'])){
-    $userName = login($data['username'], $data['password']);
-    if(!empty($sessionName)){
-      $_SESSION['NAME'] = $userName;
+    $logincheck = login($data['username'], $data['password']);
+    if($logincheck == "") {
+      return $_SESSION['checkerr'] = 'ユーザー名もしくはパスワードが違います。';
     } else {
-      $_SESSION['NAME'] = "";
+      $_SESSION["NAME"] = $logincheck;
+      if (isset($_SESSION["NAME"])) {
+        return $_SESSION['NAME'];
+      }
     }
   }
 }
+
 function validateUserCheck($username, $password) {
   if (empty($username)) {
     return $_SESSION['checkerr'] = 'ユーザー名が未入力です。';
   } else if (empty($password)) {
     return $_SESSION['checkerr'] = 'パスワードが未入力です。';
   }
+  $_SESSION['checkerr'] = "";
   return true;
 }
 

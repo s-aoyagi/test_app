@@ -70,15 +70,14 @@ function login($username, $password) {
   $dbh = connectPdo();
   $sql = 'SELECT * FROM users WHERE username = :username';
   $stmt = $dbh->prepare($sql);
-  // $stmt->execute(array($username));
-  $stmt->execute(array(':username' => $username));
-  if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    if (password_verify($password, $row['password'])) {
+  $stmt->bindValue(':username', $username, PDO::PARAM_STR);
+  $stmt->execute();
+  if ($row = $stmt->fetch()) {
+    if (password_verify($password, $row[password])) {
       session_regenerate_id(true);
-      foreach ($stmt as $row) {
-        $row['name'];  // ユーザー名
-      }
-      return $row['name'];
+      return $username;
     }
+    return "";
   }
+  return "";
 }

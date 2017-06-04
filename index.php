@@ -9,7 +9,7 @@
   <title>Home</title>
 </head>
 <body>
-  <p>ようこそ</p>
+  <p><?php echo 'ようこそ'. $_SESSION['NAME'] . 'さん' ?></p>
   <div>
     <a href="new.php">
       <p>新規作成</p>

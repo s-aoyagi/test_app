@@ -8,7 +8,6 @@ if (isset($_SESSION["NAME"])) {
 
 // セッションの変数のクリア
 $_SESSION = array();
-
 // セッションクリア
 @session_destroy();
 ?>
